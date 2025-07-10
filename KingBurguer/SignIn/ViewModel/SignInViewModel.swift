@@ -14,6 +14,7 @@ protocol SignInViewModelDelegate {
 class SignInViewModel {
     
     var delegate: SignInViewModelDelegate?
+    var coordinator: SignInCoordinator?
     
     var state: SignInStage = .none {
         didSet {
@@ -28,8 +29,8 @@ class SignInViewModel {
             self.state = .failure("usuarui nao existe")
         }
     }
-    // 1. NADA - Preparado para receber o input
-    // 2. Carregando
-    // 3. Sucesso
-    // 4. ERRO - mostrar uma mensagem vinda do servidor(usuario nao existe)
+    
+    func goToSignUp() {
+        coordinator?.signUp()
+        }
 }

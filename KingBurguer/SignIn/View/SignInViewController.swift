@@ -62,7 +62,7 @@ class SignInViewController: UIViewController {
         view.addSubview(send)
         view.addSubview(register)
         
-        let emailConstraints = [
+        let emailConstraints :[NSLayoutConstraint] = [
             email.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             email.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             email.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -102,7 +102,7 @@ class SignInViewController: UIViewController {
     }
     
     @objc func registerDidTap(sender: UIButton) {
-        viewModel?.send()
+        viewModel?.goToSignUp()
     }
     
 }
