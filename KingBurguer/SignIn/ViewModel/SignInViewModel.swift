@@ -26,11 +26,15 @@ class SignInViewModel {
         state = .loading
         //aqui eu espero 2 segundos
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.state = .failure("usuarui nao existe")
+            self.state = .gotoHome
         }
     }
     
     func goToSignUp() {
         coordinator?.signUp()
         }
+    
+    func goToHome() {
+        coordinator?.home()
+    }
 }
