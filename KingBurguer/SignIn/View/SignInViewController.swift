@@ -9,18 +9,36 @@ import UIKit
 
 class SignInViewController: UIViewController {
     
-    let email: UITextField = {
+    let scrollView: UIScrollView = {
+        let sc = UIScrollView()
+        sc.translatesAutoresizingMaskIntoConstraints = false
+        return sc
+    }()
+    
+    let container: UIView = {
+        let v = UIView()
+        v.backgroundColor = .red
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    
+    lazy var email: UITextField = {
         let ed = UITextField()
         ed.backgroundColor = .white
         ed.placeholder = "Digite seu e-mail"
+        ed.returnKeyType = .next
+        ed.delegate = self
         ed.translatesAutoresizingMaskIntoConstraints = false
         return ed
     }()
     
-    let password: UITextField = {
+    lazy var password: UITextField = {
         let ed = UITextField()
         ed.backgroundColor = .white
         ed.placeholder = "Digite sua senha"
+        ed.returnKeyType = .done
+        ed.delegate = self
         ed.translatesAutoresizingMaskIntoConstraints = false
         return ed
     }()
@@ -50,12 +68,29 @@ class SignInViewController: UIViewController {
             viewModel?.delegate = self
         }
     }
+    
+    
     // 1. definicao de layout
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
         navigationItem.title = "Login"
+        
+        var texts: [UITextField] = []
+        for i in 0..<10 {
+            let t = UITextField()
+            t.placeholder = "olá \(i)"
+            t.borderStyle = .roundedRect
+            t.translatesAutoresizingMaskIntoConstraints = false
+            container.addSubview(t)
+            texts.append(t)
+        }
+        
+        container.addSubview(send)
+        //scroll.addSubview(container)
+        //view.addSubview(scroll)
+        
         
         view.addSubview(email)
         view.addSubview(password)
@@ -95,7 +130,17 @@ class SignInViewController: UIViewController {
         NSLayoutConstraint.activate(sendConstraints)
         NSLayoutConstraint.activate(registerConstraints)
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
 
+    @objc func dismissKeyboard(_ view: UITapGestureRecognizer) {
+        self.view.endEditing(true)
+    }
     // 2. evento de touch
     @objc func sendDidTap(sender: UIButton) {
         viewModel?.send()
@@ -107,6 +152,17 @@ class SignInViewController: UIViewController {
     
 }
 
+extension SignInViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if (textField.returnKeyType == .done) {
+            view.endEditing(true)
+        } else {
+            password.becomeFirstResponder()
+        }
+        return true
+    }
+    
+}
 
 extension SignInViewController: SignInViewModelDelegate{
     //3.Observador do view model

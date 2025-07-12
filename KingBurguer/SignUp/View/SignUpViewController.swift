@@ -145,7 +145,7 @@ extension SignUpViewController: SignUpViewModelDelegate {
             //mostrar a progress
             break
         case.gotoHome:
-            //navegar para a tela principal
+            viewModel?.goToHome()
             break
         case .failure(let msg):
             let alert = UIAlertController(title: "Erro", message: msg, preferredStyle: .alert)
